@@ -12,7 +12,8 @@ const FoodItem = ({ image, name, price, desc , id }) => {
         <div className='food-item'>
             <div className='food-item-img-container'>
                 <img className='food-item-image' src={url+"/images/"+image} alt="" />
-                {cartItems && id
+                {id // cartItems updation would take place just on frontend, without any login.
+                // just in case id is faulty, undefined, etc.
                     ? (cartItems[id] > 0
                         ? <div className="food-item-counter">
                             <img src={assets.remove_icon_red} onClick={()=>removeFromCart(id)} alt="" />
