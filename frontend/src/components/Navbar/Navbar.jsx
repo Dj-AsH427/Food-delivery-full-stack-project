@@ -8,12 +8,12 @@ const Navbar = ({ setShowLogin }) => {
 
   const [menu, setMenu] = useState("home"); //Navbar menu items css prop
   const { getTotalCartAmount, token ,setToken } = useContext(StoreContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
-    navigate('/')
+    navigate('/')//User to be sent to homepage after logout:
   }
 
   return (
@@ -21,7 +21,8 @@ const Navbar = ({ setShowLogin }) => {
       <Link to='/'><img className='logo' src={assets.logo} alt="" /></Link>
       <ul className="navbar-menu">
         <Link to="/" onClick={() => setMenu("home")} className={`${menu === "home" ? "active" : ""}`}>home</Link>
-        <a href='#explore-menu' onClick={() => setMenu("menu")} className={`${menu === "menu" ? "active" : ""}`}>menu</a>
+        <a href='#explore-menu' onClick={() => setMenu("menu")} className={`${menu === "menu" ? "active" : ""}`}>menu</a> 
+        {/* across components but within the same page */}
         <a href='#app-download' onClick={() => setMenu("mob-app")} className={`${menu === "mob-app" ? "active" : ""}`}>mobile app</a>
         <a href='#footer' onClick={() => setMenu("contact")} className={`${menu === "contact" ? "active" : ""}`}>contact us</a>
       </ul>

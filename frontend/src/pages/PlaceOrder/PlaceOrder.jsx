@@ -51,6 +51,7 @@ const PlaceOrder = () => {
             if (response.data.success) {
                 const { session_url } = response.data;
                 window.location.replace(session_url);
+                // Stripe returns a session object, and session.url is a special field that contains a prebuilt Stripe Checkout Page link.
             }
             else {
                 toast.error("Something Went Wrong")
@@ -72,10 +73,11 @@ const PlaceOrder = () => {
 
     useEffect(() => {
         if (!token) {
-            toast.error("to place an order sign in first")
+            toast.error("To place an order sign in first")
             navigate('/cart')
         }
         else if (getTotalCartAmount() === 0) {
+            toast.error("The cart is empty!!")
             navigate('/cart')
         }
     }, [token])
@@ -106,9 +108,9 @@ const PlaceOrder = () => {
                     <div>
                         <div className="cart-total-details"><p>Subtotal</p><p>{currency}{getTotalCartAmount()}</p></div>
                         <hr />
-                        <div className="cart-total-details"><p>Delivery Fee</p><p>{currency}{getTotalCartAmount() === 0 ? 0 : deliveryCharge}</p></div>
+                        <div className="cart-total-details"><p>Delivery Fee</p><p>{currency}{deliveryCharge}</p></div>
                         <hr />
-                        <div className="cart-total-details"><b>Total</b><b>{currency}{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + deliveryCharge}</b></div>
+                        <div className="cart-total-details"><b>Total</b><b>{currency}{getTotalCartAmount() + deliveryCharge}</b></div>
                     </div>
                 </div>
                 <div className="payment">

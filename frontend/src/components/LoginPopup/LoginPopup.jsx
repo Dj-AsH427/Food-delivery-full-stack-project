@@ -3,7 +3,7 @@ import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../Context/StoreContext'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify' //for appropriate error messages,etc.
 
 const LoginPopup = ({ setShowLogin }) => {
 
@@ -16,6 +16,7 @@ const LoginPopup = ({ setShowLogin }) => {
         password: ""
     })
 
+    //to take data from input field and save it in the state variable:
     const onChangeHandler = (event) => {
         const name = event.target.name
         const value = event.target.value
@@ -23,7 +24,7 @@ const LoginPopup = ({ setShowLogin }) => {
     }
 
     const onLogin = async (e) => {
-        e.preventDefault()
+        e.preventDefault()//to prevent reloading of the page
 
         let new_url = url;
         if (currState === "Login") {
@@ -35,9 +36,9 @@ const LoginPopup = ({ setShowLogin }) => {
         const response = await axios.post(new_url, data);
         if (response.data.success) {
             setToken(response.data.token)
-            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("token", response.data.token)//storing the token in local storage
             loadCartData({token:response.data.token})
-            setShowLogin(false)
+            setShowLogin(false)//hiding the login popup
         }
         else {
             toast.error(response.data.message)

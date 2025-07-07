@@ -9,13 +9,14 @@ const Cart = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='cart'>
+    <div className='cart'> 
       <div className="cart-items">
         <div className="cart-items-title">
           <p>Items</p> <p>Title</p> <p>Price</p> <p>Quantity</p> <p>Total</p> <p>Remove</p>
         </div>
         <br />
         <hr />
+        {/* as i want the details like price, not an additional check. */}
         {food_list.map((item, index) => {
           if (cartItems[item._id]>0) {
             return (<div key={index}>
@@ -50,6 +51,7 @@ const Cart = () => {
             <div className='cart-promocode-input'>
               <input type="text" placeholder='promo code'/>
               <button>Submit</button>
+              {/* Promo code functionality still left */}
             </div>
           </div>
         </div>

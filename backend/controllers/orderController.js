@@ -49,7 +49,7 @@ const placeOrder = async (req, res) => {
             line_items: line_items,
             mode: 'payment',
         });
-
+        // Stripe returns a session object, and session.url is a special field that contains a prebuilt Stripe Checkout Page link.
         res.json({ success: true, session_url: session.url });
 
     } catch (error) {

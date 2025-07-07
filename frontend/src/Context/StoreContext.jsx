@@ -35,7 +35,7 @@ const StoreContextProvider = (props) => {
         let totalAmount = 0;
         for (const item in cartItems) {
             try {
-              if (cartItems[item] > 0) {
+              if (cartItems[item] > 0) { //food_list mounted due to the exec of useEffect once app mounts.
                 let itemInfo = food_list.find((product) => product._id === item);
                 totalAmount += itemInfo.price * cartItems[item];
             }  
@@ -57,9 +57,10 @@ const StoreContextProvider = (props) => {
         setCartItems(response.data.cartData);
     }
 
+    //  UseEffect runs once when your app (or this provider) mounts, and fetches the food list from dB, wrapping in main.jsx.
     useEffect(() => {
         async function loadData() {
-            await fetchFoodList();
+            await fetchFoodList(); // to load when main.jsx initiates.
             if (localStorage.getItem("token")) {
                 setToken(localStorage.getItem("token"))
                 await loadCartData({ token: localStorage.getItem("token") })
