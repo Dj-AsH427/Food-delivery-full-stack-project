@@ -36,7 +36,7 @@ const LoginPopup = ({ setShowLogin }) => {
         const response = await axios.post(new_url, data);
         if (response.data.success) {
             setToken(response.data.token)
-            localStorage.setItem("token", response.data.token)//storing the token in local storage
+            localStorage.setItem("token", response.data.token)//storing the token in local storage fe
             loadCartData({token:response.data.token})
             setShowLogin(false)//hiding the login popup
         }
@@ -49,7 +49,8 @@ const LoginPopup = ({ setShowLogin }) => {
         <div className='login-popup'>
             <form onSubmit={onLogin} className="login-popup-container">
                 <div className="login-popup-title">
-                    <h2>{currState}</h2> <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
+                    <h2>{currState}</h2> 
+                    <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                 </div>
                 <div className="login-popup-inputs">
                     {currState === "Sign Up" ? <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required /> : <></>}

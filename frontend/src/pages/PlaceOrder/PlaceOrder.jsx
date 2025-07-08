@@ -70,6 +70,9 @@ const PlaceOrder = () => {
         }
 
     }
+    // useEffect(()=>{
+    //     console.log(data);
+    // },[data])
 
     useEffect(() => {
         if (!token) {

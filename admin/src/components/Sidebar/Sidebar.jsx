@@ -7,6 +7,9 @@ const Sidebar = () => {
   return (
     <div className='sidebar'>
       <div className="sidebar-options">
+        {/* Automatically applies an "active" class when the current URL matches. */}
+
+        {/* We can customize active styling using className directly now. */}
         <NavLink to='/add' className="sidebar-option">
             <img src={assets.add_icon} alt="" />
             <p>Add Items</p>

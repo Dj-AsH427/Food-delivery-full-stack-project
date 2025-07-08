@@ -1,6 +1,8 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js"
 import Stripe from "stripe";
+
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 //config variables
@@ -13,8 +15,8 @@ const placeOrder = async (req, res) => {
 
     try {
         const newOrder = new orderModel({
-            userId: req.body.userId,
-            items: req.body.items,
+            userId: req.body.userId, // from middleware
+            items: req.body.items,   // from original req.
             amount: req.body.amount,
             address: req.body.address,
         })
@@ -58,7 +60,7 @@ const placeOrder = async (req, res) => {
     }
 }
 
-// Placing User Order for Frontend using stripe
+// Placing User Order for Frontend using cod
 const placeOrderCod = async (req, res) => {
 
     try {
@@ -83,7 +85,7 @@ const placeOrderCod = async (req, res) => {
 // Listing Order for Admin panel
 const listOrders = async (req, res) => {
     try {
-        const orders = await orderModel.find({});
+        const orders = await orderModel.find({}); //all users.
         res.json({ success: true, data: orders })
     } catch (error) {
         console.log(error);
@@ -113,7 +115,7 @@ const updateStatus = async (req, res) => {
 
 }
 
-const verifyOrder = async (req, res) => {
+const verifyOrder = async (req, res) => { //to set payment status to true
     const { orderId, success } = req.body;
     try {
         if (success === "true") {

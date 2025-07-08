@@ -19,6 +19,7 @@ const StoreContextProvider = (props) => {
         else {
             setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
         }
+        //data only sent to backend if logged in else just fe updation.
         if (token) {
             await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
         }
@@ -61,7 +62,7 @@ const StoreContextProvider = (props) => {
     useEffect(() => {
         async function loadData() {
             await fetchFoodList(); // to load when main.jsx initiates.
-            if (localStorage.getItem("token")) {
+            if (localStorage.getItem("token")) { //still logged in after refresh.
                 setToken(localStorage.getItem("token"))
                 await loadCartData({ token: localStorage.getItem("token") })
             }
