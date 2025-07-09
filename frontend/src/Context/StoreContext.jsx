@@ -58,6 +58,16 @@ const StoreContextProvider = (props) => {
         setCartItems(response.data.cartData);
     }
 
+    const cleanupIncompleteOrders = async () => {
+        if (token) {
+            try {
+                await axios.post(url + "/api/order/cleanup", {}, { headers: { token } });
+            } catch (error) {
+                console.log("Cleanup error:", error);
+            }
+        }
+    }
+
     //  UseEffect runs once when your app (or this provider) mounts, and fetches the food list from dB, wrapping in main.jsx.
     useEffect(() => {
         async function loadData() {
@@ -69,6 +79,13 @@ const StoreContextProvider = (props) => {
         }
         loadData()
     }, [])
+
+    // Cleanup incomplete orders when token changes (user logs in)
+    useEffect(() => {
+        if (token) {
+            cleanupIncompleteOrders();
+        }
+    }, [token])
 
     const contextValue = {
         url,
@@ -83,7 +100,8 @@ const StoreContextProvider = (props) => {
         loadCartData,
         setCartItems,
         currency,
-        deliveryCharge
+        deliveryCharge,
+        cleanupIncompleteOrders
     };
 
     return (

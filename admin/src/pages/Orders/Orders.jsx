@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Orders.css'
-import { toast } from 'react-toastify';
+import { toast,ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import { assets, url, currency } from '../../assets/assets';
 
@@ -19,13 +19,18 @@ const Order = () => {
   }
 
   const statusHandler = async (event, orderId) => {
-    console.log(event, orderId);
+    // console.log(event, orderId);
     const response = await axios.post(`${url}/api/order/status`, {
       orderId,
       status: event.target.value
     })
     if (response.data.success) {
-      await fetchAllOrders();
+      // console.log(response.data.message);
+      toast.success(response.data.message);
+      await fetchAllOrders(); //refresh
+    }
+    else{
+      toast.error(response.data.message);
     }
   }
 

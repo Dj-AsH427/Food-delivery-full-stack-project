@@ -46,7 +46,7 @@ const placeOrder = async (req, res) => {
         })
 
         const session = await stripe.checkout.sessions.create({
-            success_url: `${frontend_URL}/verify?success=true&orderId=${newOrder._id}`,
+            success_url: `${frontend_URL}/verify?success=true&orderId=${newOrder._id}`, //specific url later used for searchParams in verify.jsx
             cancel_url: `${frontend_URL}/verify?success=false&orderId=${newOrder._id}`,
             line_items: line_items,
             mode: 'payment',
@@ -93,10 +93,30 @@ const listOrders = async (req, res) => {
     }
 }
 
+// Cleanup incomplete orders (orders with payment: false older than 2 hours)
+const cleanupIncompleteOrders = async (userId) => {
+    try {
+        const time = new Date(Date.now() - 2 * 60 * 60 * 1000); // 2 hours ago
+        await orderModel.deleteMany({
+            userId: userId,
+            payment: false,
+            date: { $lt: time }
+        });
+    } catch (error) {
+        console.log("Cleanup error:", error);
+    }
+}
+
 // User Orders for Frontend using API
 const userOrders = async (req, res) => {
     try {
-        const orders = await orderModel.find({ userId: req.body.userId });
+        // First cleanup any incomplete orders older than 2 hours
+        await cleanupIncompleteOrders(req.body.userId);
+        
+        // Only return orders that are paid (payment: true)
+        const orders = await orderModel.find({ 
+            userId: req.body.userId
+        });
         res.json({ success: true, data: orders })
     } catch (error) {
         console.log(error);
@@ -132,4 +152,15 @@ const verifyOrder = async (req, res) => { //to set payment status to true
 
 }
 
-export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod }
+// Cleanup endpoint for incomplete orders
+const cleanupOrders = async (req, res) => {
+    try {
+        await cleanupIncompleteOrders(req.body.userId);
+        res.json({ success: true, message: "Cleanup completed" })
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Cleanup failed" })
+    }
+}
+
+export { placeOrder, listOrders, userOrders, updateStatus, verifyOrder, placeOrderCod, cleanupOrders }

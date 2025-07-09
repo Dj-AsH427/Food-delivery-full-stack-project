@@ -21,7 +21,7 @@ const PlaceOrder = () => {
         phone: ""
     })
 
-    const { getTotalCartAmount, token, food_list, cartItems, url, setCartItems,currency,deliveryCharge } = useContext(StoreContext);
+    const { getTotalCartAmount, token, food_list, cartItems, url, setCartItems,currency,deliveryCharge, cleanupIncompleteOrders } = useContext(StoreContext);
 
     const navigate = useNavigate();
 
@@ -33,6 +33,10 @@ const PlaceOrder = () => {
 
     const placeOrder = async (e) => {
         e.preventDefault()
+        
+        // Clean up any incomplete orders before placing a new one
+        await cleanupIncompleteOrders();
+        
         let orderItems = [];
         food_list.map(((item) => {
             if (cartItems[item._id] > 0) {

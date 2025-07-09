@@ -7,6 +7,8 @@ import './Verify.css'
 const Verify = () => {
   const { url } = useContext(StoreContext)
   const [searchParams, setSearchParams] = useSearchParams();
+  // The useSearchParams hook in React Router is used to read and manipulate the query parameters (the part after ? in a URL), 
+  // usually to cater to Stripe payment response.
   const success = searchParams.get("success")
   const orderId = searchParams.get("orderId")
 
